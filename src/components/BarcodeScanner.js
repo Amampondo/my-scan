@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useZxing } from "react-zxing";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Cart from "./Cart";
 
 export const BarcodeScanner = () => {
   const [results, setResults] = useState({});
@@ -10,11 +11,13 @@ export const BarcodeScanner = () => {
     onDecodeResult(result) {
       handleScan(result.getText())
     },
+    paused:(!scan),
   });
 
   function handleScan(result){
     
     setResults((values)=>({...values,[result]:"R 10.99"}))
+    setScan(false)
   }
 
   function removeItem(item){
@@ -26,54 +29,23 @@ export const BarcodeScanner = () => {
     })
   }
 
-  const shoppingList =(results)=>{
-    return(
-        <>
-        <div className="container-fluid">
-        <div className="container text-center p-4">
-            <h1>Your Cart</h1>
-        </div>
-        <div className="container">
-            <table className="table ">
-                <thead>
-                    <tr>
-                        <th>Products</th>
-                        <th>Price</th>
-                        <th>Remove</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        Object.keys(results).map((key)=>{
-                            return(
-                                <tr>
-                                    <th>{key}</th>
-                                    <th>{results[key]}</th>
-                                    <th><button className="btn btn-danger" onClick={()=>removeItem(key)}>Del</button></th>
-                                </tr>
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
-        </div>
-      <div className='container p-4 fixed-bottom'>
-        <button className='btn btn-success' onClick={()=>(setScan(true))}>scan</button>
-      </div>
-      </div>
-        </>
-    )
+  function handleBack(){
+    setScan(false)
   }
 
   const scanner=(ref)=>{
     return(
         <>
         <div className='container-md p-4 text-start'>
-          <button className='btn btn-primary' onClick={()=>(setScan(false))}>Cart</button>
+          <button className='btn btn-primary' onClick={handleBack}>Cart</button>
         </div>
           <video ref={ref} className="img-fluid"/>
         </>
     )
+  }
+
+  function upScanState(state){
+    setScan(state)
   }
 
   useEffect(()=>{const hello=()=>{
@@ -83,11 +55,10 @@ export const BarcodeScanner = () => {
 
   return (
     <>
-    <h1>hey</h1>
     {
-        ( scan)?scanner(ref)
-        :shoppingList(results)
-    }
+        (scan)?scanner(ref)
+        :<Cart results={results} upScanState={upScanState} removeItem={removeItem}/>
+      }
     </>
   );
 }
