@@ -83,6 +83,7 @@ export const BarcodeScanner = () => {
 
   return (
     <>
+    <h1>hey</h1>
     {
         ( scan)?scanner(ref)
         :shoppingList(results)
