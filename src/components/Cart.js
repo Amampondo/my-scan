@@ -29,7 +29,7 @@ const Cart =({props,results,removeItem,upScanState})=>{
                 </tbody>
             </table>
         </div>
-      <div className='container p-4 fixed-bottom'>
+      <div className='container p-4 fixed-bottom text-center'>
         <button className='btn btn-success' onClick={()=>(upScanState(true))}>scan</button>
       </div>
       </div>

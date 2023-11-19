@@ -39,7 +39,9 @@ export const BarcodeScanner = () => {
         <div className='container-md p-4 text-start'>
           <button className='btn btn-primary' onClick={handleBack}>Cart</button>
         </div>
-          <video ref={ref} className="img-fluid"/>
+        <div className="container text-center">
+          <video ref={ref} className="img-fluid"/> 
+        </div>
         </>
     )
   }
